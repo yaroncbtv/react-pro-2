@@ -26,7 +26,7 @@ class CardMe extends React.Component {
                                     </Card.Header>
 
                                     <Card.Body>
-                                        {tweet.contact}
+                                        {tweet.content}
                                     </Card.Body>
                                 </Card>
                             </>

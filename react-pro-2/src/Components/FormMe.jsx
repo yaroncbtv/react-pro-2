@@ -1,6 +1,7 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 import 'bootstrap/dist/css/bootstrap.min.css';
 class FormMe extends React.Component{
     constructor(props) {
@@ -8,7 +9,7 @@ class FormMe extends React.Component{
         this.state = {
                 userName: '',
                 date: '',
-                contact: ''
+                content: ''
         };
     
         this.handleChange = this.handleChange.bind(this);
@@ -16,7 +17,7 @@ class FormMe extends React.Component{
       }
 
       handleChange(event) {
-        this.setState({contact: event.target.value});
+        this.setState({content: event.target.value});
       }
       
       handleSubmit(event) {
@@ -24,12 +25,12 @@ class FormMe extends React.Component{
         event.preventDefault();
 
         this.setState({
-            contact: ''
+            content: ''
         })
       }
 
       chackIfOver140Char(){
-        if(this.state.contact.length < 140){
+        if(this.state.content.length < 140){
             return(
                 <Button onClick={this.handleSubmit} style={{
                     float: 'right'
@@ -37,11 +38,17 @@ class FormMe extends React.Component{
             )
         }else{
             return(
+                <>
+                <Alert style={{textAlign:'center'}} variant={'danger'}>
+                    The tweet can't contain more then 140 chars.
+                </Alert>
                 <Button style={{
                     float: 'right'
                 }} variant="primary" disabled>
                 Tweet
                 </Button>
+                </>
+                
             )
         }
         
@@ -54,7 +61,7 @@ class FormMe extends React.Component{
         <Form>
         <Form.Group controlId="exampleForm.ControlTextarea1">
         <Form.Label></Form.Label>
-        <Form.Control value={this.state.contact} onChange={this.handleChange} placeholder="What you have in mind..." as="textarea" rows={6} 
+        <Form.Control value={this.state.content} onChange={this.handleChange} placeholder="What you have in mind..." as="textarea" rows={6} 
         style={{
               background: '#15202B',
               color: 'white'
