@@ -31,23 +31,28 @@ class App extends React.Component{
 
 
   componentDidMount() {
+    this.setState({userName:localStorage.getItem('UserName')})
     axios.get(`https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet`)
       .then(res => {
         const tweets = res.data;
         this.setState({
             tweets: tweets.tweets
            });
-      })
+      }) 
   }
 
   handleInputChild(user){
+    
+   
+    
+    
     this.setState({loading:true})
         
     setTimeout(() => {
           const date = new Date();
 
     let tweet = {
-          userName: 'Yaron',
+          userName: this.state.userName,
           date: date.toISOString(),
           content: user.content
       }

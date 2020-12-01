@@ -3,12 +3,16 @@ import NavbarMe from './NavbarMe';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 class UserName extends React.Component{
     constructor(props) {
         super(props);
-        this.state = {userName: ''};
+        this.state = {
+            userName: '',
+            alert:false
+        };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,9 +25,12 @@ class UserName extends React.Component{
     
       handleSubmit(event) {
     //    console.log('A name was submitted: ' + this.state.userName);
-       this.props.userNamePage2(this.state.userName);
+       this.setState({alert:true})
+        this.props.userNamePage2(this.state.userName);
+       localStorage.setItem('UserName', this.state.userName);
        event.preventDefault();
         this.setState({userName:''})
+        
       }
     render(){
       return (
@@ -31,7 +38,7 @@ class UserName extends React.Component{
         <Container>
         <NavbarMe/>
           <div style={{color:'white'}}>
-          <h1>UserName</h1>
+          <h1 style={{marginTop:'30px',marginBottom:'30px'}}>UserName</h1>
 
         <Form>
             <Form.Group controlId="exampleForm.ControlInput1">
@@ -40,8 +47,16 @@ class UserName extends React.Component{
             </Form.Group>
         </Form>
         <Button onClick={this.handleSubmit} style={{float:'right'}} variant="primary">save</Button>
-
-          </div>
+        
+        
+        {this.state.alert
+        ? <Alert style={{width:'80%',textAlign:'center'}} variant={'success'}>
+        Your name has been successfully saved.
+        </Alert>
+        : <></>
+        
+        }
+        </div>
           
         </Container>
           
