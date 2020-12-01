@@ -24,7 +24,6 @@ class UserName extends React.Component{
       }
     
       handleSubmit(event) {
-    //    console.log('A name was submitted: ' + this.state.userName);
        this.setState({alert:true})
         this.props.userNamePage2(this.state.userName);
        localStorage.setItem('UserName', this.state.userName);

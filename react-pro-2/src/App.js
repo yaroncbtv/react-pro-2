@@ -16,6 +16,7 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+
 class App extends React.Component{
   constructor(props) {
     super(props);
@@ -121,7 +122,7 @@ class App extends React.Component{
       </Row>
       </Container>
           </Route>
-          <Route path="/UserName">
+          <Route path="/username">
             <UserName userNamePage2 = {this.userNamePage2}/>
           </Route>
         </Switch>
