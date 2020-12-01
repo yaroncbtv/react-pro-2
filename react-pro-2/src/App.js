@@ -10,15 +10,22 @@ import Col from 'react-bootstrap/Col';
 import axios from 'axios';
 import { css } from "@emotion/core";
 import ClipLoader from "react-spinners/SyncLoader";
+import UserName from './Components/UserName';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
 class App extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
       tweets: [],
-      loading: false
+      loading: false,
+      userName: ''
     }
   
-
+    this.userNamePage2 = this.userNamePage2.bind(this);
     this.handleInputChild = this.handleInputChild.bind(this);
   }
 
@@ -61,9 +68,15 @@ class App extends React.Component{
         .catch(error => {
             console.log(error.response)
         });
+
         this.setState({loading:false})
       }, 1000);
      
+  }
+
+  userNamePage2(userName){
+    this.setState({userName:userName})
+    
   }
 
   render(){
@@ -75,6 +88,10 @@ class App extends React.Component{
     
     return (
       <>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            
       <Container >
       <Row>
         <Col>
@@ -95,13 +112,33 @@ class App extends React.Component{
       <Row>
         <Col>
         <CardMe tweets = {this.state.tweets}/>
-        
         </Col>
       </Row>
-
-
-      
       </Container>
+          </Route>
+          <Route path="/UserName">
+            <UserName userNamePage2 = {this.userNamePage2}/>
+          </Route>
+        </Switch>
+    </Router>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       </>
     );
   }

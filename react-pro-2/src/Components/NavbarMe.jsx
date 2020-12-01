@@ -9,8 +9,8 @@ class NavbarMe extends React.Component{
       <>
         <Navbar bg="dark" variant="dark">
             <Nav className="mr-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Profile</Nav.Link>
+            <Nav.Link href="/">Home</Nav.Link>
+            <Nav.Link href="/UserName">Profile</Nav.Link>
             </Nav>
         </Navbar>
       </>
