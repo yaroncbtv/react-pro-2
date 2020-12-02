@@ -16,6 +16,9 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import CreateUser from './Components/CreateUser';
+import Login from './Components/Login';
+import fire from './Components/Fire';
 
 class App extends React.Component{
   constructor(props) {
@@ -23,7 +26,13 @@ class App extends React.Component{
     this.state = {
       tweets: [],
       loading: false,
-      userName: ''
+      userName: '',
+      user: '',
+      setEmailError:'',
+      setPasswordError:'',
+      email: '',
+      password: '',
+      hasAccount: false
     }
   
     this.userNamePage2 = this.userNamePage2.bind(this);
@@ -85,16 +94,39 @@ class App extends React.Component{
     
   }
 
+
+  CreateUserChildeState(state){
+    fire.auth().createUserWithEmailAndPassword(state.email, state.password)
+    .then((user) => {
+      console.log(user)
+    })
+    .catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ..
+    });
+    }
+
+    loginChildeState(state){
+      
+
+    }
+
+
+
   render(){
     const override = css`
     display: flex;
     justify-content: center;
     margin: 0 auto;
   `;
-    
+  
+
+
+
     return (
       <>
-      <Router>
+      {/* <Router>
         <Switch>
           <Route exact path="/">
             
@@ -126,9 +158,20 @@ class App extends React.Component{
             <UserName userNamePage2 = {this.userNamePage2}/>
           </Route>
         </Switch>
+    </Router> */}
+
+        <Router>
+        <Switch>
+          <Route exact path="/login">
+          <Login loginChildeState = {this.loginChildeState}/>
+          </Route>
+          <Route path="/createuser">
+            <CreateUser CreateUserChildeState = {this.CreateUserChildeState}/>
+          </Route>
+          
+    
+    </Switch>
     </Router>
-
-
 
 
 
