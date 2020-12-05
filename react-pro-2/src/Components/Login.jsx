@@ -1,6 +1,6 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Nav';
+import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import NavbarMe from './NavbarMe';
@@ -15,7 +15,8 @@ class Login extends React.Component{
         this.state = {
             email: '',
             password:'',
-            successLogin: null
+            successLogin: null,
+            isLogin: false
 
         };
     
@@ -31,26 +32,28 @@ class Login extends React.Component{
         this.setState({password: event.target.value});
     }
 
+     
 
-
-      handleSubmit(event) {
-        this.props.loginChildeState(this.state);
+       handleSubmit(event) {
         // console.log(this.state.email);
         // console.log(this.state.password);
-
         fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
         .then((user) => {
             this.setState({successLogin:true})
-            console.log(user)
+            this.setState({isLogin:true});
+            //this.props.loginChildeState(this.state.isLogin);
+            localStorage.setItem('isLogin', true);
+            window.location.reload();
         })
         .catch((error) => {
             this.setState({successLogin:false})
             var errorCode = error.code;
             var errorMessage = error.message;
-  });
+        });
 
-
-        event.preventDefault();
+        
+         
+         event.preventDefault();
       }
 
   render(){
@@ -61,13 +64,15 @@ class Login extends React.Component{
       </Alert>
     } if(successLogin === false){
         successLogin =  <Alert variant={'danger'}>
-        Login faild Email or Password not Coorect.
+        Login faild Email or Password not correct.
         </Alert>
     }
     return (
       <>
        
        <Container >
+       <div style={{display:'flex',justifyContent:'center'}}>
+       <div style={{marginTop:'50px'}} class="shadow-lg p-3 mb-5  rounded">
        <h1 style={{color:'white'}}>Login</h1>
        <Form style={{color:'white'}}>
         <Form.Group controlId="formBasicEmail">
@@ -82,21 +87,23 @@ class Login extends React.Component{
             <Form.Label>Password</Form.Label>
             <Form.Control value={this.state.password} onChange={this.handleChangePassword} type="password" placeholder="Password" />
         </Form.Group>
-        <Form.Group controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group>
-        <Button onClick={this.handleSubmit} variant="primary" type="submit">
+        
+        <Button onClick={this.handleSubmit} action="/" variant="primary" type="submit">
             Login
         </Button>
+        
         </Form>
 
         <Nav defaultActiveKey="/login" as="ul">
         <Nav.Item as="li">
-            <Nav.Link href="/createuser">New here ? Click to Create user</Nav.Link>
+            <Nav.Link href="/createuser">New here ? Click to Registered</Nav.Link>
         </Nav.Item>
         </Nav>
         {successLogin}
+        </div>
+        </div>
         </Container>
+        
       </>
     );
   }

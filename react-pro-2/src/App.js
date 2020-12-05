@@ -19,6 +19,7 @@ import {
 import CreateUser from './Components/CreateUser';
 import Login from './Components/Login';
 import fire from './Components/Fire';
+import firebase from 'firebase';
 
 class App extends React.Component{
   constructor(props) {
@@ -32,7 +33,8 @@ class App extends React.Component{
       setPasswordError:'',
       email: '',
       password: '',
-      hasAccount: false
+      hasAccount: false,
+      isLogin: false
     }
   
     this.userNamePage2 = this.userNamePage2.bind(this);
@@ -40,15 +42,43 @@ class App extends React.Component{
   }
 
 
+
+  listenForChange(){
+    
+    
+    this.db.ref('tweets').on('child_added', snapshot =>{
+      let tweet = {
+        id: snapshot.key,
+        content: snapshot.val().content,
+        date: snapshot.val().date
+      }
+     
+      let tweets = this.state.tweets;
+      tweets.unshift(tweet);
+      console.log(tweets)
+      this.setState({
+        tweets: tweets
+      });
+    });
+  }
+
+
   componentDidMount() {
+    
+    
     this.setState({userName:localStorage.getItem('UserName')})
-    axios.get(`https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet`)
-      .then(res => {
-        const tweets = res.data;
-        this.setState({
-            tweets: tweets.tweets
-           });
-      }) 
+    // axios.get(`https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet`)
+    //   .then(res => {
+    //     const tweets = res.data;
+    //     this.setState({
+    //         tweets: tweets.tweets
+    //        });
+    //   }) 
+    this.db = firebase.database();
+
+    this.listenForChange();
+    
+
   }
 
   handleInputChild(user){
@@ -66,23 +96,35 @@ class App extends React.Component{
           date: date.toISOString(),
           content: user.content
       }
-      let tweets = this.state.tweets;
-      tweets.unshift(tweet);
+      // let tweets = this.state.tweets;
+      // tweets.unshift(tweet);
       
-      this.setState({
-        tweets: tweets
-      });
-      axios.post('https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet', {
-        content: tweet.content, 
-        userName: tweet.userName, 
-        date: tweet.date
-        })
-        .then(response => { 
-          console.log(response)
-        })
-        .catch(error => {
-            console.log(error.response)
-        });
+      // this.setState({
+      //   tweets: tweets
+      // });
+      // axios.post('https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet', {
+      //   content: tweet.content, 
+      //   userName: tweet.userName, 
+      //   date: tweet.date
+      //   })
+      //   .then(response => { 
+      //     console.log(response)
+      //   })
+      //   .catch(error => {
+      //       console.log(error.response)
+      //   });
+      
+      firebase.database().ref('tweets').push({
+          content: tweet.content, 
+          userName: tweet.userName, 
+          date: tweet.date
+    })
+      
+      
+      
+      
+
+
 
         this.setState({loading:false})
       }, 1000);
@@ -96,19 +138,16 @@ class App extends React.Component{
 
 
   CreateUserChildeState(state){
-    fire.auth().createUserWithEmailAndPassword(state.email, state.password)
-    .then((user) => {
-      console.log(user)
-    })
-    .catch((error) => {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // ..
-    });
+    
     }
+    
+    
 
-    loginChildeState(state){
-      
+    loginChildeState(val){
+     console.log(val)
+     
+     
+     
 
     }
 
@@ -120,13 +159,11 @@ class App extends React.Component{
     justify-content: center;
     margin: 0 auto;
   `;
+  let islogin = localStorage.getItem('isLogin');
+  let resultLogin;
   
-
-
-
-    return (
-      <>
-      {/* <Router>
+  if (islogin !== 'false') {
+    resultLogin =  <Router>
         <Switch>
           <Route exact path="/">
             
@@ -158,36 +195,27 @@ class App extends React.Component{
             <UserName userNamePage2 = {this.userNamePage2}/>
           </Route>
         </Switch>
-    </Router> */}
-
-        <Router>
-        <Switch>
-          <Route exact path="/login">
-          <Login loginChildeState = {this.loginChildeState}/>
-          </Route>
-          <Route path="/createuser">
-            <CreateUser CreateUserChildeState = {this.CreateUserChildeState}/>
-          </Route>
-          
-    
-    </Switch>
     </Router>
+  } else {
+    resultLogin = <Router>
+    <Switch>
+      <Route exact path="/">
+      <Login loginChildeState = {this.loginChildeState}/>
+      </Route>
+      <Route path="/createuser">
+        <CreateUser CreateUserChildeState = {this.CreateUserChildeState}/>
+      </Route>
+      
+
+</Switch>
+</Router>
+
+  }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    return (
+      <>
+      {resultLogin}
       </>
     );
   }

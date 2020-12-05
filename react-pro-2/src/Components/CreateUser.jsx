@@ -1,10 +1,12 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Nav';
+import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
+import Alert from 'react-bootstrap/Alert';
 import Nav from 'react-bootstrap/Nav';
 import NavbarMe from './NavbarMe';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import fire from './Fire';
 
 class CreateUser extends React.Component{
   
@@ -12,7 +14,8 @@ class CreateUser extends React.Component{
         super(props);
         this.state = {
             email: '',
-            password:''
+            password:'',
+            successCreateUser: null
         };
     
         this.handleChangeEmail = this.handleChangeEmail.bind(this);
@@ -30,18 +33,44 @@ class CreateUser extends React.Component{
 
 
       handleSubmit(event) {
-        this.props.CreateUserChildeState(this.state);
-        // console.log(this.state.email);
-        // console.log(this.state.password);
+        this.props.CreateUserChildeState(this.state.successCreateUser);
+        fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+        .then((user) => {
+          console.log(user)
+          this.setState({successCreateUser:true})
+        })
+        .catch((error) => {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          this.setState({successCreateUser:false})
+
+          // ..
+        });
         event.preventDefault();
       }
 
   render(){
-   
+    let successCreateUser = this.state.successCreateUser;
+    if (successCreateUser) {
+      successCreateUser = <Alert variant={'success'}>
+        Create user Success, go to login Page: 
+        <Nav>
+        <Nav.Item>
+      <Nav.Link href="/">Login</Nav.Link>
+      </Nav.Item>
+        </Nav>
+      </Alert>
+    } if(successCreateUser === false){
+      successCreateUser =  <Alert variant={'danger'}>
+        Create User faild Email or Password not correct.
+        </Alert>
+    }
     return (
       <>
        
        <Container >
+       <div style={{display:'flex',justifyContent:'center'}}>
+       <div style={{marginTop:'50px'}} class="shadow-lg p-3 mb-5  rounded">
        <h1 style={{color:'white'}}>Create User</h1>
        <Form style={{color:'white'}}>
         <Form.Group controlId="formBasicEmail">
@@ -56,9 +85,7 @@ class CreateUser extends React.Component{
             <Form.Label>Password</Form.Label>
             <Form.Control value={this.state.password} onChange={this.handleChangePassword} type="password" placeholder="Password" />
         </Form.Group>
-        <Form.Group controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group>
+        
         <Button onClick={this.handleSubmit} variant="primary" type="submit">
             Create User
         </Button>
@@ -67,9 +94,12 @@ class CreateUser extends React.Component{
 
         <Nav as="ul">
         <Nav.Item as="li">
-        <Nav.Link href="/login">Alradt Use ? Click to Login</Nav.Link>
+        <Nav.Link href="/">Already registered ? Click to Login</Nav.Link>
         </Nav.Item>
         </Nav>
+        {successCreateUser}
+        </div>
+        </div>
         </Container>
       </>
     );
