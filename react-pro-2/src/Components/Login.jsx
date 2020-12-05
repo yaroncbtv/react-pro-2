@@ -7,6 +7,7 @@ import NavbarMe from './NavbarMe';
 import Alert from 'react-bootstrap/Alert';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import fire from './Fire';
+import ClipLoader from "react-spinners/SyncLoader";
 
 class Login extends React.Component{
   
@@ -16,7 +17,9 @@ class Login extends React.Component{
             email: '',
             password:'',
             successLogin: null,
-            isLogin: false
+            isLogin: false,
+            loading: false
+
 
         };
     
@@ -37,7 +40,12 @@ class Login extends React.Component{
        handleSubmit(event) {
         // console.log(this.state.email);
         // console.log(this.state.password);
-        fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+        
+        
+        this.setState({loading:true})
+    setTimeout(() => {
+      
+      fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
         .then((user) => {
             this.setState({successLogin:true})
             this.setState({isLogin:true});
@@ -50,6 +58,15 @@ class Login extends React.Component{
             var errorCode = error.code;
             var errorMessage = error.message;
         });
+
+
+        
+        this.setState({loading:false})
+      }, 1000);
+        
+        
+        
+        
 
         
          
@@ -93,12 +110,18 @@ class Login extends React.Component{
         </Button>
         
         </Form>
-
+        
         <Nav defaultActiveKey="/login" as="ul">
         <Nav.Item as="li">
             <Nav.Link href="/createuser">New here ? Click to Registered</Nav.Link>
         </Nav.Item>
         </Nav>
+        <div style={{textAlign:'center'}}>
+        <ClipLoader
+          color={"green"}
+          loading={this.state.loading}/>
+        </div>
+        
         {successLogin}
         </div>
         </div>

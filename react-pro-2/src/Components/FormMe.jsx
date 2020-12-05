@@ -3,6 +3,8 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import firebase from 'firebase';
+
 class FormMe extends React.Component{
     constructor(props) {
         super(props);
@@ -18,9 +20,21 @@ class FormMe extends React.Component{
 
       handleChange(event) {
         this.setState({content: event.target.value});
+        var userId = firebase.auth().currentUser.uid;
+        
+        firebase.database().ref('/users/' + userId +'/userName').once('value').then((snapshot) => {
+          var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+          this.setState({userName:username})
+        });
+        
       }
       
+
+       
       handleSubmit(event) {
+        
+        
+        
         this.props.handleInputChild(this.state);
         event.preventDefault();
 
@@ -55,7 +69,6 @@ class FormMe extends React.Component{
       }
 
   render(){
-    
     return (
       <>
         <Form>

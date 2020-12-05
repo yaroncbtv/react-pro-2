@@ -7,6 +7,7 @@ import Nav from 'react-bootstrap/Nav';
 import NavbarMe from './NavbarMe';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import fire from './Fire';
+import ClipLoader from "react-spinners/SyncLoader";
 
 class CreateUser extends React.Component{
   
@@ -15,7 +16,8 @@ class CreateUser extends React.Component{
         this.state = {
             email: '',
             password:'',
-            successCreateUser: null
+            successCreateUser: null,
+            loading: false
         };
     
         this.handleChangeEmail = this.handleChangeEmail.bind(this);
@@ -33,7 +35,11 @@ class CreateUser extends React.Component{
 
 
       handleSubmit(event) {
-        this.props.CreateUserChildeState(this.state.successCreateUser);
+        
+        
+        this.setState({loading:true})
+    setTimeout(() => {
+      this.props.CreateUserChildeState(this.state.successCreateUser);
         fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
         .then((user) => {
           console.log(user)
@@ -46,6 +52,15 @@ class CreateUser extends React.Component{
 
           // ..
         });
+      
+
+        
+        this.setState({loading:false})
+      }, 1000);
+        
+        
+        
+        
         event.preventDefault();
       }
 
@@ -62,7 +77,7 @@ class CreateUser extends React.Component{
       </Alert>
     } if(successCreateUser === false){
       successCreateUser =  <Alert variant={'danger'}>
-        Create User faild Email or Password not correct.
+        Create User Faild Email or Password is not valid.<br/>Try: <br/>Email: xxxx@xxxx.com <br/> Password: 123456
         </Alert>
     }
     return (
@@ -97,6 +112,11 @@ class CreateUser extends React.Component{
         <Nav.Link href="/">Already registered ? Click to Login</Nav.Link>
         </Nav.Item>
         </Nav>
+        <div style={{textAlign:'center'}}>
+        <ClipLoader
+          color={"green"}
+          loading={this.state.loading}/>
+        </div>
         {successCreateUser}
         </div>
         </div>

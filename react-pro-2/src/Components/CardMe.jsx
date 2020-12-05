@@ -4,7 +4,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 class CardMe extends React.Component {
 
     render() {
-        
         if(this.props.tweets){
             return(
                 <>
@@ -20,7 +19,7 @@ class CardMe extends React.Component {
 
 
                                         }}>
-                                        <div>{tweet.userName}</div>
+                                        <div>{tweet.username}</div>
                                     <div>{tweet.date}</div>
                                     </Card.Header>
 

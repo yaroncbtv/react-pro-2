@@ -34,7 +34,7 @@ class App extends React.Component{
       email: '',
       password: '',
       hasAccount: false,
-      isLogin: false
+      isLogin: false,
     }
   
     this.userNamePage2 = this.userNamePage2.bind(this);
@@ -45,75 +45,55 @@ class App extends React.Component{
 
   listenForChange(){
     
-    
-    this.db.ref('tweets').on('child_added', snapshot =>{
-      let tweet = {
-        id: snapshot.key,
-        content: snapshot.val().content,
-        date: snapshot.val().date
-      }
-     
-      let tweets = this.state.tweets;
-      tweets.unshift(tweet);
-      console.log(tweets)
-      this.setState({
-        tweets: tweets
+    this.setState({loading:true})
+    setTimeout(() => {
+      this.db.ref('tweets').on('child_added', snapshot =>{
+        let tweet = {
+          id: snapshot.key,
+          content: snapshot.val().content,
+          date: snapshot.val().date,
+          username: snapshot.val().userName
+        }
+       
+        let tweets = this.state.tweets;
+        tweets.unshift(tweet);
+        this.setState({
+          tweets: tweets
+        });
       });
-    });
+      
+      
+      
+
+
+        
+        this.setState({loading:false})
+      }, 1000);
+    
+    
   }
 
 
   componentDidMount() {
     
-    
-    this.setState({userName:localStorage.getItem('UserName')})
-    // axios.get(`https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet`)
-    //   .then(res => {
-    //     const tweets = res.data;
-    //     this.setState({
-    //         tweets: tweets.tweets
-    //        });
-    //   }) 
     this.db = firebase.database();
-
     this.listenForChange();
     
 
   }
 
   handleInputChild(user){
-    
-   
-    
-    
+
     this.setState({loading:true})
-        
     setTimeout(() => {
           const date = new Date();
-
+      
     let tweet = {
-          userName: this.state.userName,
+          userName: user.userName,
           date: date.toISOString(),
           content: user.content
       }
-      // let tweets = this.state.tweets;
-      // tweets.unshift(tweet);
-      
-      // this.setState({
-      //   tweets: tweets
-      // });
-      // axios.post('https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet', {
-      //   content: tweet.content, 
-      //   userName: tweet.userName, 
-      //   date: tweet.date
-      //   })
-      //   .then(response => { 
-      //     console.log(response)
-      //   })
-      //   .catch(error => {
-      //       console.log(error.response)
-      //   });
-      
+     
       firebase.database().ref('tweets').push({
           content: tweet.content, 
           userName: tweet.userName, 
@@ -125,7 +105,7 @@ class App extends React.Component{
       
 
 
-
+        
         this.setState({loading:false})
       }, 1000);
      
@@ -144,7 +124,6 @@ class App extends React.Component{
     
 
     loginChildeState(val){
-     console.log(val)
      
      
      

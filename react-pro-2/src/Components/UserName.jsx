@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+import firebase from 'firebase';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 class UserName extends React.Component{
@@ -25,8 +26,29 @@ class UserName extends React.Component{
     
       handleSubmit(event) {
        this.setState({alert:true})
-        this.props.userNamePage2(this.state.userName);
+       firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          firebase.database().ref('users/' + user.uid + '/userName').set({
+            username: localStorage.getItem('UserName'),
+            email: 'email',
+            profile_picture : 'imageUrl'
+          });
+      
+      
+          console.log("User is signed in.");
+        } else {
+           console.log("No user is signed in.");
+      
+        }
+      });
+       
+       this.props.userNamePage2(this.state.userName);
        localStorage.setItem('UserName', this.state.userName);
+       
+
+       
+       
+       
        event.preventDefault();
         this.setState({userName:''})
         

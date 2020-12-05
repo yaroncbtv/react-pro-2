@@ -2,11 +2,17 @@ import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import firebase from 'firebase';
+
 class NavbarMe extends React.Component{
   
   click(){
     localStorage.setItem('isLogin', false);
-
+    firebase.auth().signOut().then(function() {
+      // Sign-out successful.
+    }).catch(function(error) {
+      // An error happened.
+    });
   }
   render(){
     return (
