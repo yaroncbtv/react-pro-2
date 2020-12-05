@@ -36,7 +36,8 @@ class App extends React.Component{
       hasAccount: false,
       isLogin: false,
     }
-  
+    
+    this.loginChildeState = this.loginChildeState.bind(this);
     this.userNamePage2 = this.userNamePage2.bind(this);
     this.handleInputChild = this.handleInputChild.bind(this);
   }
@@ -112,6 +113,7 @@ class App extends React.Component{
   }
 
   userNamePage2(userName){
+    console.log(this.state)
     this.setState({userName:userName})
     
   }
@@ -122,10 +124,12 @@ class App extends React.Component{
     }
     
     
+    
 
-    loginChildeState(val){
-     
-     
+    loginChildeState(isLogin){
+      
+      this.setState({isLogin:isLogin})
+      
      
 
     }
@@ -138,10 +142,15 @@ class App extends React.Component{
     justify-content: center;
     margin: 0 auto;
   `;
-  let islogin = localStorage.getItem('isLogin');
+  var user = firebase.auth().currentUser;
+
+  
+  
+
+  //const islogin = this.state.isLogin;
   let resultLogin;
   
-  if (islogin !== 'false') {
+  if (user) {
     resultLogin =  <Router>
         <Switch>
           <Route exact path="/">
@@ -176,18 +185,27 @@ class App extends React.Component{
         </Switch>
     </Router>
   } else {
-    resultLogin = <Router>
-    <Switch>
-      <Route exact path="/">
-      <Login loginChildeState = {this.loginChildeState}/>
-      </Route>
-      <Route path="/createuser">
-        <CreateUser CreateUserChildeState = {this.CreateUserChildeState}/>
-      </Route>
+    
+    
+    setTimeout(function(){ 
       
-
-</Switch>
-</Router>
+      resultLogin = <Router>
+      <Switch>
+        <Route exact path="/">
+        <Login loginChildeState = {this.loginChildeState}/>
+        </Route>
+        <Route path="/createuser">
+          <CreateUser CreateUserChildeState = {this.CreateUserChildeState}/>
+        </Route>
+        
+  
+        </Switch>
+        </Router>
+      
+     }, 100);
+      
+    
+    
 
   }
 

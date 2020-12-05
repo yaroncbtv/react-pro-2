@@ -7,7 +7,7 @@ import firebase from 'firebase';
 class NavbarMe extends React.Component{
   
   click(){
-    localStorage.setItem('isLogin', false);
+    
     firebase.auth().signOut().then(function() {
       // Sign-out successful.
     }).catch(function(error) {

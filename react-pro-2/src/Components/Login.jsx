@@ -49,9 +49,10 @@ class Login extends React.Component{
         .then((user) => {
             this.setState({successLogin:true})
             this.setState({isLogin:true});
-            //this.props.loginChildeState(this.state.isLogin);
-            localStorage.setItem('isLogin', true);
-            window.location.reload();
+            this.props.loginChildeState(this.state);
+            
+            //localStorage.setItem('isLogin', true);
+           // window.location.reload();
         })
         .catch((error) => {
             this.setState({successLogin:false})
@@ -105,7 +106,7 @@ class Login extends React.Component{
             <Form.Control value={this.state.password} onChange={this.handleChangePassword} type="password" placeholder="Password" />
         </Form.Group>
         
-        <Button onClick={this.handleSubmit} action="/" variant="primary" type="submit">
+        <Button onClick={this.handleSubmit} action="/" variant="primary">
             Login
         </Button>
         
