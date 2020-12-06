@@ -184,10 +184,12 @@ class App extends React.Component{
           </Route>
         </Switch>
     </Router>
-  } else {
+  } 
+  
+  
+  else {
     
     
-    setTimeout(function(){ 
       
       resultLogin = <Router>
       <Switch>
@@ -202,7 +204,6 @@ class App extends React.Component{
         </Switch>
         </Router>
       
-     }, 100);
       
     
     
