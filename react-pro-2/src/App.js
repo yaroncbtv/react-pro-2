@@ -35,6 +35,8 @@ class App extends React.Component{
       password: '',
       hasAccount: false,
       isLogin: false,
+      Anonymous: '',
+      userUser: true
     }
     
     this.loginChildeState = this.loginChildeState.bind(this);
@@ -143,16 +145,39 @@ class App extends React.Component{
     margin: 0 auto;
   `;
   var user = firebase.auth().currentUser;
-
   
-  
-
   //const islogin = this.state.isLogin;
   let resultLogin;
   
   if (user) {
     resultLogin =  <Router>
         <Switch>
+        <Route exact path="/home">
+        <Container >
+      <Row>
+        <Col>
+        <NavbarMe/>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col>
+        <FormMe handleInputChild = {this.handleInputChild}/>
+        <ClipLoader
+          css={override}
+          color={"green"}
+          loading={this.state.loading}/>
+         
+        </Col>
+      </Row>
+
+      <Row>
+        <Col>
+        <CardMe tweets = {this.state.tweets}/>
+        </Col>
+      </Row>
+      </Container>
+        </Route>
           <Route exact path="/">
             
       <Container >
@@ -169,6 +194,7 @@ class App extends React.Component{
           css={override}
           color={"green"}
           loading={this.state.loading}/>
+         
         </Col>
       </Row>
 
@@ -190,8 +216,7 @@ class App extends React.Component{
   else {
     
     
-      
-      resultLogin = <Router>
+       resultLogin = <Router>
       <Switch>
         <Route exact path="/">
         <Login loginChildeState = {this.loginChildeState}/>
@@ -199,13 +224,10 @@ class App extends React.Component{
         <Route path="/createuser">
           <CreateUser CreateUserChildeState = {this.CreateUserChildeState}/>
         </Route>
-        
-  
         </Switch>
         </Router>
+     
       
-      
-    
     
 
   }

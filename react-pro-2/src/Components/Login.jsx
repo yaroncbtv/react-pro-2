@@ -106,8 +106,8 @@ class Login extends React.Component{
             <Form.Control value={this.state.password} onChange={this.handleChangePassword} type="password" placeholder="Password" />
         </Form.Group>
         
-        <Button onClick={this.handleSubmit} action="/" variant="primary">
-            Login
+        <Button formaction="https://www.w3docs.com" onClick={this.handleSubmit} action="/home" variant="primary" type="submit">
+          Login
         </Button>
         
         </Form>

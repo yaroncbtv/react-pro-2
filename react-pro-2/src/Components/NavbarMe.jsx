@@ -19,7 +19,7 @@ class NavbarMe extends React.Component{
       <>
         <Navbar bg="dark" variant="dark">
             <Nav className="mr-auto">
-            <Nav.Link href="/">Home</Nav.Link>
+            <Nav.Link href="/home">Home</Nav.Link>
             <Nav.Link href="/username">Profile</Nav.Link>
             <Nav.Link style={{color:'red'}} onClick={this.click} href="/">Logout</Nav.Link>
             </Nav>
