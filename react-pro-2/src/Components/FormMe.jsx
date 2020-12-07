@@ -41,13 +41,28 @@ class FormMe extends React.Component{
       }
 
       chackIfOver140Char(){
-        if(this.state.content.length < 140){
+        
+        if(this.state.content.length === 0){
+            return(
+                <Button style={{
+                    float: 'right'
+                }} variant="primary" disabled>
+                Tweet
+                </Button>
+            )
+            
+        }
+        
+        
+        else if(this.state.content.length < 140){
             return(
                 <Button onClick={this.handleSubmit} style={{
                     float: 'right'
                 }} variant="primary">Tweet</Button>
             )
-        }else{
+        }
+        
+        else{
             return(
                 <>
                 <Alert style={{textAlign:'center'}} variant={'danger'}>
