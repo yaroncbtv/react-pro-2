@@ -1,4 +1,7 @@
-# Getting Started with Create React App
+# Getting Started with Y.C Blog React App
+
+- Link to my publish netlify Blog react app: (https://yc-blog.netlify.app/)
+- Entar to react-pro-2 folder to see the code project.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
