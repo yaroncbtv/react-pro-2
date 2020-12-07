@@ -32,9 +32,6 @@ class FormMe extends React.Component{
 
        
       handleSubmit(event) {
-        
-        
-        
         this.props.handleInputChild(this.state);
         event.preventDefault();
 

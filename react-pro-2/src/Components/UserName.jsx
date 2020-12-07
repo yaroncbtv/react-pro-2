@@ -44,11 +44,7 @@ class UserName extends React.Component{
        
        this.props.userNamePage2(this.state.userName);
        localStorage.setItem('UserName', this.state.userName);
-       
-
-       
-       
-       
+  
        event.preventDefault();
         this.setState({userName:''})
         

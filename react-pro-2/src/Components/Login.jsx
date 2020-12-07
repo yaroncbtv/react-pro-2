@@ -38,9 +38,6 @@ class Login extends React.Component{
      
 
        handleSubmit(event) {
-        // console.log(this.state.email);
-        // console.log(this.state.password);
-        
         
         this.setState({loading:true})
     setTimeout(() => {
@@ -50,9 +47,6 @@ class Login extends React.Component{
             this.setState({successLogin:true})
             this.setState({isLogin:true});
             this.props.loginChildeState(this.state);
-            
-            //localStorage.setItem('isLogin', true);
-           // window.location.reload();
         })
         .catch((error) => {
             this.setState({successLogin:false})
@@ -60,17 +54,9 @@ class Login extends React.Component{
             var errorMessage = error.message;
         });
 
-
-        
         this.setState({loading:false})
       }, 1000);
-        
-        
-        
-        
 
-        
-         
          event.preventDefault();
       }
 
