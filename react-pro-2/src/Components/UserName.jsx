@@ -17,6 +17,7 @@ class UserName extends React.Component{
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleFirebse = this.handleFirebse.bind(this);
     }
 
     handleChange(event) {
@@ -24,29 +25,46 @@ class UserName extends React.Component{
         
       }
     
-      handleSubmit(event) {
-       this.setState({alert:true})
-       firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
+      handleFirebse(userName){
+        
+
+        firebase.auth().onAuthStateChanged(function(user) {
+          
+          if (user) {
           firebase.database().ref('users/' + user.uid + '/userName').set({
-            username: localStorage.getItem('UserName'),
+            username: userName,
             email: 'email',
             profile_picture : 'imageUrl'
           });
       
-      
+          
           console.log("User is signed in.");
         } else {
            console.log("No user is signed in.");
       
         }
       });
-       
+      }
+
+      componentDidMount(){
+        var userId = firebase.auth().currentUser.uid;
+        
+        firebase.database().ref('/users/' + userId +'/userName').once('value').then((snapshot) => {
+          var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+          this.setState({userName:username})
+        });
+      }
+      handleSubmit(event) {
+        this.setState({alert:true})
+        
+        this.handleFirebse(this.state.userName)
+     
+        
        this.props.userNamePage2(this.state.userName);
-       localStorage.setItem('UserName', this.state.userName);
+       
   
        event.preventDefault();
-        this.setState({userName:''})
+        //this.setState({userName:''})
         
       }
     render(){
@@ -55,11 +73,11 @@ class UserName extends React.Component{
         <Container>
         <NavbarMe/>
           <div style={{color:'white'}}>
-          <h1 style={{marginTop:'30px',marginBottom:'30px'}}>UserName</h1>
+      <h1 style={{marginTop:'30px',marginBottom:'30px'}}>User Name: {this.state.userName}</h1>
 
         <Form>
             <Form.Group controlId="exampleForm.ControlInput1">
-            <Form.Label>User Name</Form.Label>
+            <Form.Label>Change User Name</Form.Label>
             <Form.Control value={this.state.userName} onChange={this.handleChange} style={{background:'#15202B', color:'white'}} type="text"/>
             </Form.Group>
         </Form>
@@ -68,7 +86,7 @@ class UserName extends React.Component{
         
         {this.state.alert
         ? <Alert style={{width:'80%',textAlign:'center'}} variant={'success'}>
-        Your name has been successfully saved.
+        Your user name has been successfully saved.
         </Alert>
         : <></>
         

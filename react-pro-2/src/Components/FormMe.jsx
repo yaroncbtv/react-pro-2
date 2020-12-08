@@ -25,11 +25,18 @@ class FormMe extends React.Component{
         firebase.database().ref('/users/' + userId +'/userName').once('value').then((snapshot) => {
           var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
           this.setState({userName:username})
+          console.log(this.state.userName)
         });
         
       }
       
-
+      componentDidMount(){
+        var userId = firebase.auth().currentUser.uid;
+        firebase.database().ref('/users/' + userId +'/userName').once('value').then((snapshot) => {
+          var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+          this.setState({userName:username})
+        });
+      }
        
       handleSubmit(event) {
         this.props.handleInputChild(this.state);
@@ -42,6 +49,22 @@ class FormMe extends React.Component{
 
       chackIfOver140Char(){
         
+        if(this.state.userName === 'Anonymous'){
+          return(
+            <>
+            <Alert style={{textAlign:'center'}} variant={'warning'}>
+                    Go to the Profile page to setup your User Name before you can tweet
+            </Alert>
+            
+            <Button style={{
+                    float: 'right'
+                }} variant="primary" disabled>
+                Tweet
+                </Button>
+            </>
+          )
+        }
+
         if(this.state.content.length === 0){
             return(
                 <Button style={{

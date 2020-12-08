@@ -160,7 +160,7 @@ class App extends React.Component{
         </Col>
       </Row>
 
-      <Row>
+      <Row >
         <Col>
         <FormMe handleInputChild = {this.handleInputChild}/>
         <ClipLoader
